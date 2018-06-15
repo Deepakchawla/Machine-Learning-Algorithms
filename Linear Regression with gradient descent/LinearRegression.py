@@ -23,7 +23,7 @@ y_data_test = list(pd.DataFrame(test, columns=['sepal_width'])['sepal_width'])
 l_rate = 0.0001
 
 # Total iterations
-iterations = 1100
+iterations = 1000
 
 # length of the train and test datasets.
 m = len(x_data_train)
@@ -42,13 +42,14 @@ def gradient_descent():
     # iterations loop then assign theta0 and theta1 to newtheta0 and newtheta1 variables.
     while i < iterations:
         for j in range(0, m):
-            temp1 += (abs(newtheta0 + newtheta1 * x_data_train[j]) - (y_data_train[j]))
-            temp2 += (abs(newtheta0 + newtheta1 * x_data_train[j]) - (y_data_train[j]) * x_data_train[j])
+            temp1 += ((newtheta0 + newtheta1 * x_data_train[j]) - (y_data_train[j]))
+            temp2 += ((newtheta0 + newtheta1 * x_data_train[j]) - (y_data_train[j]) * x_data_train[j])
         tempnewtheta0 = (tempnewtheta0 + abs(tempnewtheta0 - ((l_rate * temp1)/m)))
         tempnewtheta1 = (tempnewtheta1 + abs(tempnewtheta1 - ((l_rate * temp2)/m)))
         if not np.isinf(tempnewtheta1):
             newtheta0 = tempnewtheta0
             newtheta1 = tempnewtheta1
+
         i += 1
     # predict the values by giving x_input_test.
     for i in range(len(x_data_test)):

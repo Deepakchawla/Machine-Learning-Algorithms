@@ -18,7 +18,7 @@ x_data_test = list(pd.DataFrame(test, columns=['sepal_length'])['sepal_length'])
 y_data_test = list(pd.DataFrame(test, columns=['sepal_width'])['sepal_width'])
 
 # Learning Rate
-l_rate = 0.01
+l_rate = 0.0001
 
 # Total iterations
 iterations = 1000
@@ -53,11 +53,12 @@ def gradient_descent():
 
 # Function error_calculate() is calculate the accuracy of the predicted values with the input y test values.
 def avgerror(y_pred_test):
-    total_error = (np.sum(y_pred_test) - np.sum(y_data_test)) / np.sum(y_pred_test)
-    return abs(total_error)/len(y_data_test)
+    total_error = 0
+    for i in range(0, n):
+        total_error += abs(y_pred_test[i] - y_data_test[i])
+    return 1 - total_error/len(y_data_test)
 
 
 if __name__ == '__main__':
     # Call gradient_descent() function to the build the model using learning algorithm.
     gradient_descent()
-

@@ -51,16 +51,16 @@ def gradient_descent():
         temp = (newtheta0 + newtheta1 * x_data_test[i])
         temp = float(str(temp)[0:3])
         y_pred.append(temp)
-    print('prediction',y_pred,x_data_test)
+    print('prediction', y_pred, x_data_test)
     # call error_calculate()
     print("Accuracy in model is",  avgerror(np.asarray(y_pred)))
-    # graph(y_pred)
+    graph(y_pred)
 
 
 # Function error_calculate() is calculate the accuracy of the predicted values with the input y test values.
 def avgerror(y_pred_test):
     total_error = sum(abs(x - y) for x, y in zip(y_data_test, y_pred_test))
-    return (total_error/len(y_data_test)) * 100
+    return total_error/len(y_data_test)
 
 
 def graph(y_pred):

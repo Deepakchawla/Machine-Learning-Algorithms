@@ -9,7 +9,7 @@ df = pd.read_csv('iris.csv')
 df['split'] = np.random.randn(df.shape[0], 1)
 
 # Split data into train and test data as 60% and 40%.
-msk = np.random.rand(len(df)) <= 0.8
+msk = np.random.rand(len(df)) <= 0.7
 train = df[msk]
 test = df[~msk]
 
@@ -20,7 +20,7 @@ x_data_test = np.array(pd.DataFrame(test, columns=['sepal_length'])['sepal_lengt
 y_data_test = np.array(pd.DataFrame(test, columns=['sepal_width'])['sepal_width'])
 
 # Learning Rate
-l_rate = 0.001
+l_rate = 0.0001
 
 # Total iterations
 iterations = 2000
@@ -59,8 +59,12 @@ def gradient_descent():
 
 # Function error_calculate() is calculate the accuracy of the predicted values with the input y test values.
 def avgerror(y_pred_test):
-    total_error = sum(abs(x - y) for x, y in zip(y_data_test, y_pred_test))
-    return total_error/len(y_data_test)
+    total_error = 0
+    for i in range(0, n):
+        total_error += abs((y_pred_test[i] - y_data_test[i])/y_data_test[i])
+    total_error = (total_error/len(y_data_test))
+    accuracy = 1 - total_error
+    return accuracy * 100
 
 
 def graph(y_pred):

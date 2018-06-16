@@ -4,20 +4,17 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import style
 
-
 df = pd.read_csv('iris.csv')
-df['split'] = np.random.randn(df.shape[0], 1)
-
-# Split data into train and test data as 60% and 40%.
-msk = np.random.rand(len(df)) <= 0.7
-train = df[msk]
-test = df[~msk]
 
 # Assign the split data into train and test variables.
-x_data_train = np.array(pd.DataFrame(train, columns=['sepal_length'])['sepal_length'])
-y_data_train = np.array(pd.DataFrame(train, columns=['sepal_width'])['sepal_width'])
-x_data_test = np.array(pd.DataFrame(test, columns=['sepal_length'])['sepal_length'])
-y_data_test = np.array(pd.DataFrame(test, columns=['sepal_width'])['sepal_width'])
+x_data_length = np.array(pd.DataFrame(df, columns=['sepal_length'])['sepal_length'])
+y_data_width = np.array(pd.DataFrame(df, columns=['sepal_width'])['sepal_width'])
+
+x_data_train = x_data_length[:90]
+x_data_test = x_data_length[91:152]
+
+y_data_train = y_data_width[:90]
+y_data_test = y_data_width[91:152]
 
 # Learning Rate
 l_rate = 0.0001
@@ -28,7 +25,6 @@ iterations = 2000
 # length of the train and test datasets.
 m = len(x_data_train)
 n = len(y_data_test)
-
 
 # Function gradient_descent() is calculate the theta0 and theta1 for hypothesis of linear regression.
 def gradient_descent():

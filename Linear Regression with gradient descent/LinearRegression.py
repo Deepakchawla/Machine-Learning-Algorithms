@@ -31,7 +31,7 @@ def gradient_descent():
     temp1 = temp2 = i = 0
     newtheta0 = 0
     newtheta1 = 1
-    y_pred = []
+    y_pred = np.array(0)
 
     # iterations loop then assign theta0 and theta1 to newtheta0 and newtheta1 variables.
     while i < iterations:
@@ -46,11 +46,11 @@ def gradient_descent():
     for i in range(len(x_data_test)):
         temp = (newtheta0 + newtheta1 * x_data_test[i])
         temp = float(str(temp)[0:3])
-        y_pred.append(temp)
-    print('prediction', y_pred, x_data_test)
+        y_pred = np.append(y_pred, temp)
+    print(y_pred)
     # call error_calculate()
     print("Accuracy in model is",  avgerror(np.asarray(y_pred)))
-    graph(y_pred)
+    # graph(y_pred)
 
 
 # Function error_calculate() is calculate the accuracy of the predicted values with the input y test values.

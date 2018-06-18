@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
-from matplotlib import style
 from sklearn.model_selection import train_test_split
+
 
 class LinearTrainer:
 
@@ -29,18 +29,13 @@ class LinearTrainer:
             theta1 = theta1 - ((self.l_rate * temp2) / m)
             i += 1
 
-        return [theta0, theta1]
+        return np.array([theta0, theta1])
 
     def classify(self, x_data_test, parameters):
-        y_pred = np.array(0)
-
-        # predict the values by giving x_input_test.
-        for i in range(len(x_data_test)):
-            temp = (parameters[0] + parameters[1] * x_data_test[i])
-            temp = float(str(temp)[0:3])
-            y_pred = np.append(y_pred, temp)
-
-        return y_pred
+        x_data_test = np.reshape(x_data_test, (x_data_test.shape[0], 1))
+        x_data_test = np.column_stack((np.ones((x_data_test.shape[0], 1)), x_data_test))
+        parameters = np.reshape(parameters, (parameters.shape[0], 1))
+        return np.dot(x_data_test, parameters)
 
     def accuracy(self, y_data_test, y_pred_test):
         n = len(y_data_test)
@@ -68,12 +63,12 @@ def main():
     x_data_train, x_data_test, y_data_train, y_data_test = train_test_split(
         x_data_set, y_data_set, test_size=0.25, shuffle=False)
 
-    LT = LinearTrainer()
-    parameters = LT.trains(x_data_train, y_data_train)
-    y_prediction = LT.classify(x_data_test, parameters)
-    accuracy = LT.accuracy(y_data_test, y_prediction)
+    l_t = LinearTrainer()
+    parameters = l_t.trains(x_data_train, y_data_train)
+    y_prediction = l_t.classify(x_data_test, parameters)
+    accuracy = l_t.accuracy(y_data_test, y_prediction)
     print(accuracy)
-    LT.plotgraph(x_data_test, y_data_test, y_prediction)
+    l_t.plotgraph(x_data_test, y_data_test, y_prediction)
 
 
 if __name__ == '__main__':

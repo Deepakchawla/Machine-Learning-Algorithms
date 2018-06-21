@@ -45,8 +45,9 @@ def gradient_descent():
         temp = (newtheta0 + newtheta1 * x_data_test[i])
         temp = float(str(temp)[0:3])
         y_pred = np.append(y_pred, temp)
+
     # call error_calculate()
-    print("Accuracy in model is",  avgerror(np.asarray(y_pred)))
+    print("Accuracy in model is",  avgerror(np.asarray(y_pred)), type(y_pred))
     # graph(y_pred)
 
 

@@ -11,41 +11,34 @@ class LinearTrainer:
         # Learning Rate
         self.l_rate = 0.0001
         # Total iterations
-        self.iterations = 4000
+        self.iterations = 60000
 
     def trains(self, x_data_train, y_data_train):
 
         i = 0
         parameters = np.array([0, 1], dtype='f')
+
         # length of the train and test data sets.
-        m = len(x_data_train)
-        tp = x_data_train
-        tp = np.reshape(tp, (tp.shape[0], 1))
-        x_data_train = np.reshape(x_data_train, (x_data_train.shape[0], 1))
-        y_data_train = np.reshape(y_data_train, (y_data_train.shape[0], 1))
         x_data_train = np.column_stack((np.ones((x_data_train.shape[0], 1)), x_data_train))
-        parameters = np.reshape(parameters, (parameters.shape[0], 1))
+
         while i <= self.iterations:
             temp1 = ((np.dot(x_data_train, parameters)) - y_data_train)
-            temp2 = np.dot(np.reshape(tp, (tp.shape[0]), 1), temp1)
-            parameters[0] = parameters[0] - ((self.l_rate * np.sum(temp1)) / m)
-            parameters[1] = parameters[1] - ((self.l_rate * np.sum(temp2)) / m)
+            temp2 = np.dot(temp1, x_data_train)
+            parameters[0] = parameters[0] - ((self.l_rate * np.sum(temp1)) / len(x_data_train))
+            parameters[1] = parameters[1] - ((self.l_rate * np.sum(temp2)) / len(x_data_train))
             i += 1
 
         return parameters
 
     def classify(self, x_data_test, parameters):
 
-        x_data_test = np.reshape(x_data_test, (x_data_test.shape[0], 1))
         x_data_test = np.column_stack((np.ones((x_data_test.shape[0], 1)), x_data_test))
-        parameters = np.reshape(parameters, (parameters.shape[0], 1))
         return np.dot(x_data_test, parameters)
 
     def accuracy(self, y_data_test, y_pred_test):
 
-        n = len(y_data_test)
         total_error = 0
-        for i in range(0, n):
+        for i in range(0, len(y_data_test)):
             total_error += abs((y_pred_test[i] - y_data_test[i]) / y_data_test[i])
         total_error = (total_error / len(y_data_test))
         accuracy = 1 - total_error
@@ -64,8 +57,8 @@ def main():
     df = pd.read_csv('iris.csv')
 
     # Assign the split data into train and test variables.
-    x_data_set = np.array(pd.DataFrame(df, columns=['sepal_length'])['sepal_length'])
-    y_data_set = np.array(pd.DataFrame(df, columns=['sepal_width'])['sepal_width'])
+    x_data_set = np.array(pd.DataFrame(df, columns=['sepal_length']))
+    y_data_set = np.array(pd.DataFrame(df, columns=['sepal_width']))
 
     x_data_train, x_data_test, y_data_train, y_data_test = train_test_split(
         x_data_set, y_data_set, test_size=0.25, shuffle=False)

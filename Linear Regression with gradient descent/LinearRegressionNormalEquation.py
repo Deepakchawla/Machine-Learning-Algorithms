@@ -7,14 +7,6 @@ from numpy.linalg import inv
 
 class LinearTrainer:
 
-    def __init__(self):
-
-        # Learning Rate
-        self.l_rate = 0.001
-        # Total iterations
-        self.iterations = 60000
-        self.mintheta = {}
-
     # Find the value of parameters in Linear Regression using normal equation method.
     def trains(self, x_data_train, y_data_train):
 
@@ -64,7 +56,7 @@ def main():
     y_prediction = l_t.classify(x_data_test, parameters)
     accuracy = l_t.accuracy(y_data_test, y_prediction)
     print(accuracy)
-    # l_t.plotgraph(x_data_test, y_data_test, y_prediction)
+    l_t.plotgraph(x_data_test, y_data_test, y_prediction)
 
 
 if __name__ == '__main__':

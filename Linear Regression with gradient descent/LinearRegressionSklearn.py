@@ -1,44 +1,40 @@
-from sklearn import datasets, linear_model
-from sklearn.metrics import explained_variance_score, r2_score
+from sklearn import linear_model
+from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
-from matplotlib import pyplot as plt
-from matplotlib import style as sy
-
-sy.use('ggplot')
-
 import pandas as pd
 import numpy as np
 
-iris = datasets.load_iris()
-iris_X = iris.data
-iris_y = iris.target
-data1 = pd.DataFrame(data= np.c_[iris['data']],
-                     columns= iris['feature_names'])
 
-X = pd.DataFrame(data1, columns=['sepal length (cm)'])
-Y = pd.DataFrame(data1, columns=['sepal width (cm)'])
+df = pd.read_csv('iris.csv')
+features = ['sepal_length', 'sepal_width', 'petal_width']
+predicted_feature = ['petal_length']
+
+# df = pd.read_csv('petrol_consumption.csv')
+# features = ['Petrol_tax', 'Average_income', 'Paved_Highways', 'Population_Driver_licence(%)']
+# predicted_feature = ['Petrol_Consumption']
+
+
+X = pd.DataFrame(df, columns=features)
+Y = pd.DataFrame(df, columns=predicted_feature)
+
 
 x_data_train, x_data_test, y_data_train, y_data_test = train_test_split(
-    X, Y, test_size=0.20, random_state=42)
+    X, Y, test_size=0.20, random_state=0)
 
 regr = linear_model.LinearRegression()
 regr.fit(x_data_train, y_data_train)
 
 y_pred_test = regr.predict(x_data_test)
+
 y_pred_test = np.array(y_pred_test).flatten()
 y_data_test = np.array(y_data_test).flatten()
 
 total_error = 0
+
 for i in range(0, len(y_data_test)):
     total_error += abs((y_pred_test[i] - y_data_test[i])/y_data_test[i])
 total_error = (total_error/len(y_data_test))
 accuracy = 1 - total_error
 
-plt.scatter(x_data_test,y_data_test, color='g', label='whole data')
-plt.plot(x_data_test, y_pred_test, color='r', label='predicted value')
-plt.show()
-
-
-print(total_error * 100, accuracy*100)
-print(explained_variance_score(y_data_test, y_pred_test, multioutput='uniform_average'))
-print(r2_score(y_data_test,y_pred_test,multioutput='uniform_average'))
+print(y_data_test, y_pred_test)
+print(mean_squared_error(y_data_test, y_pred_test), np.sqrt(mean_squared_error(y_data_test, y_pred_test)), accuracy*100)

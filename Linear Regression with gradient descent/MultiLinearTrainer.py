@@ -56,17 +56,17 @@ class LinearTrainer:
 
 def main():
 
-    # df = pd.read_csv('Housing.csv')
-    # features = ['bathrooms', 'bedrooms', 'finishedsqft', 'totalrooms']
-    # predicted_feature = ['price']
+    df = pd.read_csv('final_data.csv')
+    features = ['bathrooms', 'bedrooms', 'finishedsqft', 'totalrooms']
+    predicted_feature = ['price']
 
     # df = pd.read_csv('iris.csv', usecols=range(0,4))
     # features = ['sepal_length', 'sepal_width', 'petal_width']
     # predicted_feature = ['petal_length']
 
-    df = pd.read_csv('petrol_consumption.csv')
-    features = ['Petrol_tax', 'Average_income', 'Paved_Highways', 'Population_Driver_licence(%)']
-    predicted_feature = ['Petrol_Consumption']
+    # df = pd.read_csv('petrol_consumption.csv')
+    # features = ['Petrol_tax', 'Average_income', 'Paved_Highways', 'Population_Driver_licence(%)']
+    # predicted_feature = ['Petrol_Consumption']
 
     df = (df - df.mean()) / df.std()
 

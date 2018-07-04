@@ -18,17 +18,15 @@ class LinearTrainer:
     def trains(self, x_data_train, y_data_train, theta_vector):
         x_data_train = np.column_stack((np.ones((x_data_train.shape[0], 1), dtype=float), x_data_train))
         temp2 = np.zeros(self.iterations)
-
         for i in range(self.iterations):
             temp = ((np.dot(x_data_train, theta_vector)) - y_data_train)
-            temp1 = np.power((np.dot(x_data_train, theta_vector) - y_data_train), 2)
-            temp2[i] = np.sum(temp1) / 2 * len(x_data_train)
             temp = np.dot(np.transpose(x_data_train), temp)
             temp = ((temp * self.l_rate) / len(x_data_train))
             theta_vector = theta_vector - temp
+            temp1 = np.power((np.dot(x_data_train, theta_vector) - y_data_train), 2)
+            temp2[i] = np.sum(temp1) / 2 * len(x_data_train)
 
         # self.plotgraph(np.arange(self.iterations), '1 ', temp2)
-
         return theta_vector
 
     def classify(self, x_data_test, theta_vector):
@@ -56,11 +54,11 @@ class LinearTrainer:
 
 def main():
 
-    df = pd.read_csv('final_data.csv')
-    features = ['bathrooms', 'bedrooms', 'finishedsqft', 'totalrooms']
-    predicted_feature = ['price']
+    # df = pd.read_csv('final_data.csv')
+    # features = ['bathrooms', 'bedrooms', 'finishedsqft']
+    # predicted_feature = ['price']
 
-    # df = pd.read_csv('iris.csv', usecols=range(0,4))
+    # df = pd.read_csv('iris.csv')
     # features = ['sepal_length', 'sepal_width', 'petal_width']
     # predicted_feature = ['petal_length']
 
@@ -68,23 +66,32 @@ def main():
     # features = ['Petrol_tax', 'Average_income', 'Paved_Highways', 'Population_Driver_licence(%)']
     # predicted_feature = ['Petrol_Consumption']
 
-    df = (df - df.mean()) / df.std()
+    df = pd.read_csv('airfoil_self_noise.dat.txt', delimiter='\t')
+    df.columns = ['Frequency', 'AngleOfAttack', 'ChordLength', 'FreeStreamVelocity', 'SuctionSideDisplacementThickness', 'ScaledSoundPressureLevel']
+    features = ['Frequency', 'AngleOfAttack', 'ChordLength', 'FreeStreamVelocity', 'SuctionSideDisplacementThickness']
+    predicted_feature = ['ScaledSoundPressureLevel']
+    x_df = df[features]
+    y_df = df[predicted_feature]
 
-    x_data_set = np.array(pd.DataFrame(df, columns=features))
-    y_data_set = np.array(pd.DataFrame(df, columns=predicted_feature))
+    x_df = (x_df - x_df.mean()) / x_df.std()
+
+    x_data_set = np.array(pd.DataFrame(x_df, columns=features))
+    y_data_set = np.array(pd.DataFrame(y_df, columns=predicted_feature))
 
     l_t = LinearTrainer()
     theta_vector = np.zeros(((len(features)+1), 1), dtype='f')
     x_data_train, x_data_test, y_data_train, y_data_test = train_test_split(
-        x_data_set, y_data_set, test_size=0.25, shuffle=False)
+        x_data_set, y_data_set, test_size=0.35, shuffle=False)
 
     parameters = l_t.trains(x_data_train, y_data_train, theta_vector)
     y_prediction = l_t.classify(x_data_test, parameters)
+    y_prediction_train = l_t.classify(x_data_train, parameters)
     accuracy = l_t.accuracy(y_data_test, y_prediction)
+    accuracy_train = l_t.accuracy(y_data_train, y_prediction_train)
 
-    print(accuracy)
-    print(mean_squared_error(y_data_test, y_prediction))
-    print(np.sqrt(mean_squared_error(y_data_test, y_prediction)))
+    print("accuracy train: ", accuracy_train, "accuracy test: ", accuracy)
+    print("MSE test: ", mean_squared_error(y_data_test, y_prediction))
+    print("MSE train: ", mean_squared_error(y_data_train, y_prediction_train))
     # l_t.plotgraph(x_data_test, y_data_test, y_prediction)
 
 

@@ -1,5 +1,7 @@
 import numpy as np
 import h5py
+import pandas as pd
+from sklearn.model_selection import train_test_split
 
 
 class LogisticTrainer:
@@ -10,7 +12,7 @@ class LogisticTrainer:
         self.l_rate = 0.0001
 
         # Total iterations
-        self.iterations = 2000
+        self.iterations = 60000
 
     def trains(self, x_data_train, y_data_train, theta_vector):
 
@@ -28,9 +30,8 @@ class LogisticTrainer:
         x_data_test = np.column_stack((np.ones((x_data_test.shape[0], 1)), x_data_test))
         temp = np.dot(x_data_test, theta_vector)
         A = np.array(1 / (1 + np.exp(-(temp))))
-
         for i in (range(0, len(A))):
-            if round(A[i][0],2) <= 0.50:
+            if round(A[i][0],2) <= 0.05:
                 y_prediction[i][0] = 0
             else:
                 y_prediction[i][0] = 1
@@ -59,10 +60,32 @@ def main():
     x_data_train = x_data_train / 255.
     x_data_test = x_data_test / 255.
 
+    # df = pd.read_csv('iris.csv')
+    # features = ['sepal_length', 'sepal_width', 'petal_width', 'petal_length']
+    # predicted_feature = ['species']
+    #
+    # x_data_set = np.array(pd.DataFrame(df, columns=features))
+    # y_data_set = np.array(pd.DataFrame(df, columns=predicted_feature))
+    # x_data_set = (x_data_set - x_data_set.mean()) / x_data_set.std()
+
+    # temp = np.zeros((y_data_set.shape[0], 1), dtype=float)
+
+    # for i in range(0, y_data_set.size):
+    #     if y_data_set[i][0] == 'setosa':
+    #         temp[i][0] = 0
+    #     elif y_data_set[i][0] == 'versicolor':
+    #         temp[i][0] = 1
+    #
+    # y_data_set = temp
+
+    # x_data_train, x_data_test, y_data_train, y_data_test = train_test_split(
+    #     x_data_set, y_data_set, test_size=0.20, shuffle=False)
+
     theta_vector = np.zeros(((x_data_train.shape[1]+1), 1), dtype='f')
 
     l_t = LogisticTrainer()
     parameters = l_t.trains(x_data_train, y_data_train, theta_vector)
+    print(parameters)
     y_prediction_test = l_t.classify(x_data_test, parameters)
     y_prediction_train = l_t.classify(x_data_train, parameters)
 

@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error, accuracy_score
 
 
 class LinearTrainer:
@@ -66,9 +67,14 @@ def main():
     l_t = LinearTrainer()
     parameters = l_t.trains(x_data_train, y_data_train)
     y_prediction = l_t.classify(x_data_test, parameters)
+    y_prediction_train = l_t.classify(x_data_train, parameters)
     accuracy = l_t.accuracy(y_data_test, y_prediction)
-    print(accuracy)
-    l_t.plotgraph(x_data_test, y_data_test, y_prediction)
+    accuracy_train = l_t.accuracy(y_data_train, y_prediction_train)
+
+    print(accuracy, accuracy_train)
+    # l_t.plotgraph(x_data_test, y_data_test, y_prediction)
+    print(np.sqrt(mean_squared_error(y_data_train, y_prediction_train)))
+    print(np.sqrt(mean_absolute_error(y_data_test, y_prediction)))
 
 
 if __name__ == '__main__':

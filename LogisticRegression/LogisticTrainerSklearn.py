@@ -24,5 +24,6 @@ lr.fit(x_data_train.T, y_data_train.T.ravel())
 Y_prediction = lr.predict(x_data_test.T)
 Y_prediction_train = lr.predict(x_data_train.T)
 
+print(lr.coef_)
 print("train accuracy: {} %".format(100 - np.mean(np.abs(Y_prediction_train - y_data_train)) * 100))
 print("test accuracy: {} %".format(100 - np.mean(np.abs(Y_prediction - y_data_test)) * 100))

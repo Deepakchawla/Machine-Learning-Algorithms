@@ -1,6 +1,7 @@
 import numpy as np
 import h5py
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 
 class LogisticTrainer:
@@ -30,7 +31,7 @@ class LogisticTrainer:
         z = np.dot(x_data_test, theta_vector)
         sigmoid = np.array(1 / (1 + np.exp(-z)))
         for i in (range(0, len(sigmoid))):
-            if round(sigmoid[i][0], 2) <= 0.05:
+            if round(sigmoid[i][0],2) <= 0.05:
                 y_prediction[i][0] = 0
             else:
                 y_prediction[i][0] = 1
@@ -114,6 +115,7 @@ def main():
     # x_data_test = x_data_test / 255.
     # theta_vector = np.zeros(((x_data_train.shape[1]+1), 1), dtype='f')
 
+
     trainfile = 'train_catvnoncat.h5'
     testfile = 'test_catvnoncat.h5'
 
@@ -147,3 +149,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
